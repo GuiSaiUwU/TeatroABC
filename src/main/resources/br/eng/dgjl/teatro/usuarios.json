@@ -1,0 +1,11 @@
+[
+    {
+        "nome": "ADMIN",
+        "senha": "a",
+        "CPF": "ADMIN",
+        "telefone": "62900000000",
+        "endereco": "Goiania",
+        "dataNascimento": "Nov 19, 2024, 12:00:00 AM",
+        "ingressos": []
+    }
+]

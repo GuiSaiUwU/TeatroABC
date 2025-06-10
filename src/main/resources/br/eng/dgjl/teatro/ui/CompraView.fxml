@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.controlsfx.control.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="463.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.eng.dgjl.teatro.ui.CompraController">
+    <CheckListView fx:id="checkListView" layoutX="14.0" layoutY="173.0" prefHeight="268.0" prefWidth="264.0" />
+    <ChoiceBox fx:id="pecaBox" layoutX="14.0" layoutY="49.0" prefHeight="26.0" prefWidth="264.0">
+        <opaqueInsets>
+            <Insets />
+        </opaqueInsets>
+    </ChoiceBox>
+    <ChoiceBox fx:id="sessaoBox" layoutX="14.0" layoutY="95.0" prefHeight="26.0" prefWidth="264.0" />
+    <ChoiceBox fx:id="areaBox" layoutX="14.0" layoutY="137.0" prefHeight="26.0" prefWidth="264.0" />
+    <Label layoutX="300.0" layoutY="298.0" text="Numero de Ingressos:" />
+    <Label layoutX="300.0" layoutY="316.0" text="Total:" />
+    <Button fx:id="compraBtn" layoutX="390.0" layoutY="343.0" mnemonicParsing="false" text="Comprar" />
+    <Label layoutX="190.0" layoutY="4.0" text="Comprar Ingressos - Teatro ABC">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Label>
+    <Label layoutX="14.0" layoutY="121.0" text="Área:" />
+    <Label layoutX="14.0" layoutY="76.0" text="Sessão:" />
+    <Label layoutX="14.0" layoutY="31.0" text="Peça:" />
+    <ImageView fx:id="imageView" fitHeight="216.0" fitWidth="285.0" layoutX="293.0" layoutY="46.0">
+        <Image url="@images/Teatro PB.png" />
+    </ImageView>
+   <Label fx:id="ingressosLabel" layoutX="421.0" layoutY="298.0" prefHeight="18.0" prefWidth="39.0" text="0" />
+   <Label fx:id="totalLabel" layoutX="338.0" layoutY="315.0" prefHeight="18.0" prefWidth="39.0" text="0" />
+   <Button fx:id="historicoBtn" layoutX="355.0" layoutY="385.0" mnemonicParsing="false" text="Historico de Compras" />
+   <Button layoutX="384.0" layoutY="423.0" mnemonicParsing="false" onAction="#deslogarAction" text="Deslogar" />
+</AnchorPane>
