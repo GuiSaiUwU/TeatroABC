@@ -71,6 +71,7 @@
          </font>
       </Label>
       <Button fx:id="imprimirBtn" layoutX="269.0" layoutY="339.0" mnemonicParsing="false" text="Imprimir" />
+      <Button fx:id="verGraficosBtn" layoutX="444.0" layoutY="339.0" mnemonicParsing="false" onAction="#exibirGraficosAction" text="Visualizar Gráficos" />
       <Separator layoutX="177.0" layoutY="112.0" orientation="VERTICAL" prefHeight="214.0" prefWidth="5.0" />
       <Separator layoutX="361.0" layoutY="112.0" orientation="VERTICAL" prefHeight="214.0" prefWidth="5.0" />
       <Separator layoutX="13.0" layoutY="217.0" prefHeight="0.0" prefWidth="349.0" />

@@ -1,7 +1,10 @@
 package br.eng.dgjl.teatro.ui;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -30,5 +33,18 @@ public class AdminController {
     public void deslogarAction(ActionEvent actionEvent) throws IOException {
         usuarioLogado = null;
         inciarMenuStart((Stage)((Node) actionEvent.getSource()).getScene().getWindow());
+    }
+
+    public void exibirGraficosAction(ActionEvent actionEvent) {
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("GraficosView.fxml"));
+            Parent root = fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.setTitle("Visualização de Gráficos");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
