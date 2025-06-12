@@ -3,6 +3,7 @@ module br.eng.dgjl.teatro {
     requires javafx.fxml;
     requires javafx.web;
     requires javafx.graphics;
+    requires javafx.base;
     requires com.google.gson;
 
     requires org.controlsfx.controls;

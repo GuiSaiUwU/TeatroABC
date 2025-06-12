@@ -42,6 +42,7 @@ public class AdminController {
             Stage stage = new Stage();
             stage.setTitle("Visualização de Gráficos");
             stage.setScene(new Scene(root));
+            stage.setResizable(false);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+  Copyright Teatro dgjl
+-->
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.eng.dgjl.teatro.ui.HistoricoController">
+    <VBox spacing="10" alignment="TOP_CENTER" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10" AnchorPane.rightAnchor="10">
+        <Label text="Histórico de Compras" style="-fx-font-size: 16px; -fx-font-weight: bold;"/>
+        
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Label text="Filtrar por Peça:"/>
+            <ChoiceBox fx:id="pecaFilter" prefWidth="200"/>
+            <Button fx:id="filterBtn" text="Filtrar" onAction="#filterAction"/>
+            <Button fx:id="clearFilterBtn" text="Limpar Filtros" onAction="#clearFilterAction"/>
+        </HBox>
+        
+        <HBox spacing="20" alignment="CENTER">
+            <VBox spacing="5">
+                <Label text="Maior Gasto" style="-fx-font-weight: bold;"/>
+                <Label fx:id="maiorGastoLabel" text="R$ 0,00"/>
+            </VBox>
+            <VBox spacing="5">
+                <Label text="Menor Gasto" style="-fx-font-weight: bold;"/>
+                <Label fx:id="menorGastoLabel" text="R$ 0,00"/>
+            </VBox>
+            <VBox spacing="5">
+                <Label text="Total Gasto" style="-fx-font-weight: bold;"/>
+                <Label fx:id="totalGastoLabel" text="R$ 0,00"/>
+            </VBox>
+        </HBox>
+        
+        <TableView fx:id="ingressosTable" prefHeight="300" prefWidth="550">
+            <columns>
+                <TableColumn text="Peça" prefWidth="150" fx:id="pecaColumn"/>
+                <TableColumn text="Sessão" prefWidth="100" fx:id="sessaoColumn"/>
+                <TableColumn text="Área" prefWidth="120" fx:id="areaColumn"/>
+                <TableColumn text="Cadeira" prefWidth="80" fx:id="cadeiraColumn"/>
+                <TableColumn text="Preço" prefWidth="100" fx:id="precoColumn"/>
+            </columns>
+        </TableView>
+        
+        <Button fx:id="closeBtn" text="Fechar" onAction="#closeAction"/>
+    </VBox>
+</AnchorPane>

@@ -8,12 +8,15 @@ import br.eng.dgjl.teatro.classes.Peca;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -137,45 +140,31 @@ public class CompraMenu extends Application {
     }
 
     public void historicoAction(ActionEvent event) {
-        /*
-         *Função responsável por gerar os comprovantes de ingressos
-         */
-        StringBuilder ingressos = new StringBuilder();
-        for (Ingresso ingresso : usuarioLogado.getIngressos()) {
-            ingressos.append(String.format("Peça: %s.\n", ingresso.getPecaNome()));
-            ingressos.append(String.format("Sessão: %s.\n", ingresso.getSessaoNome()));
-            ingressos.append(String.format("Área: %s.\n", ingresso.getAreaNome()));
-            ingressos.append(String.format("Cadeira: %02d.\n\n", ingresso.getCadeiraPosicao() + 1));
-        }
+        try {
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("HistoricoView.fxml"));
+            AnchorPane root = loader.load();
 
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Compra - Histórico");
-        alert.setHeaderText("Estes são os seus ingressos:");
-        alert.setContentText(
-                ingressos.isEmpty() ? "Sem ingressos!" :
-                        usuarioLogado.getIngressos().size() < 5 ? ingressos.toString() : "Você possui muitos ingressos.\nPorfavor utilize o botão de imprimir (OK)."
-        );
-        Optional<ButtonType> alertBtn = alert.showAndWait();
+            // Create the scene and stage
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setTitle("Histórico de Compras");
+            stage.setScene(scene);
 
-        if (alertBtn.isEmpty()) return;
-        if (!(alertBtn.get() == ButtonType.OK)) return;
+            // Set the stage in the controller
+            HistoricoController controller = loader.getController();
+            controller.setStage(stage);
 
-        /* Parte responsavel por gerar o pop-up de salvar arquivo*/
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Salvar Comprovante");
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Texto", "*.txt"));
-        fileChooser.setInitialFileName(usuarioLogado.getNome());
-        File file = fileChooser.showSaveDialog(controller.areaBox.getScene().getWindow());
-
-        if (file != null) {
-            try { /* Salvando o arquivo */
-                file.createNewFile();
-                FileWriter myWriter = new FileWriter(file);
-                myWriter.write(ingressos.toString());
-                myWriter.close();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
+            // Show the stage
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Fallback to alert if FXML loading fails
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText("Não foi possível carregar o histórico");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 
