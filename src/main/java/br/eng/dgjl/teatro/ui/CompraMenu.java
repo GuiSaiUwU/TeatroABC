@@ -148,8 +148,11 @@ public class CompraMenu extends Application {
             // Create the scene and stage
             Scene scene = new Scene(root);
             Stage stage = new Stage();
-            stage.setTitle("Histórico de Compras");
+            stage.setTitle("Teatro - Histórico de Compras");
             stage.setScene(scene);
+            stage.getIcons().add(new Image(Objects.requireNonNull
+                    (CompraMenu.class.getResourceAsStream("images/Logo.png"))
+            ));
 
             // Set the stage in the controller
             HistoricoController controller = loader.getController();

@@ -15,6 +15,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
@@ -40,7 +41,7 @@ public class GraficosController implements Initializable {
     private Button gerarGraficoBtn;
 
     @FXML
-    private Pane graficoContainer;
+    private HBox graficoContainer;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

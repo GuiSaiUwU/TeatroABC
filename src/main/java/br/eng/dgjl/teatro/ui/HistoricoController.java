@@ -20,6 +20,9 @@ import static br.eng.dgjl.teatro.Main.usuarioLogado;
 
 public class HistoricoController {
     @FXML private ChoiceBox<String> pecaFilter;
+    @FXML private ChoiceBox<String> sessaoFilter;
+    @FXML private ChoiceBox<String> areaFilter;
+
     @FXML private TableView<Ingresso> ingressosTable;
     @FXML private TableColumn<Ingresso, String> pecaColumn;
     @FXML private TableColumn<Ingresso, String> sessaoColumn;
@@ -75,11 +78,15 @@ public class HistoricoController {
         ingressosData = FXCollections.observableArrayList(ingressos);
         ingressosTable.setItems(ingressosData);
 
-        List<String> pecas = ingressos.stream()
-                .map(Ingresso::getPecaNome)
-                .distinct()
-                .collect(Collectors.toList());
-        pecaFilter.setItems(FXCollections.observableArrayList(pecas));
+        pecaFilter.setItems(FXCollections.observableArrayList(
+                ingressos.stream().map(Ingresso::getPecaNome).distinct().sorted().toList()
+        ));
+        sessaoFilter.setItems(FXCollections.observableArrayList(
+                ingressos.stream().map(Ingresso::getSessaoNome).distinct().sorted().toList()
+        ));
+        areaFilter.setItems(FXCollections.observableArrayList(
+                ingressos.stream().map(Ingresso::getAreaNome).distinct().sorted().toList()
+        ));
 
         updateStats();
     }
@@ -92,7 +99,7 @@ public class HistoricoController {
             return;
         }
 
-        int total = ingressosData.stream().mapToInt(Ingresso::getPreco).sum();
+        int total = calcGasto();
         int max = ingressosData.stream().mapToInt(Ingresso::getPreco).max().orElse(0);
         int min = ingressosData.stream().mapToInt(Ingresso::getPreco).min().orElse(0);
 
@@ -101,25 +108,46 @@ public class HistoricoController {
         menorGastoLabel.setText("R$ " + min);
     }
 
-    @FXML
-    private void filterAction(ActionEvent event) {
-        String selectedPeca = pecaFilter.getValue();
+    /*
+    * Temos que chamar a função recursiva com um valor inicial
+    * Pois o Java não permite iniciar variaveis nos parametros
+    * Não da pra fazer calcGasto(int valorAtual = 0, indice = 0);
+    */
+    int calcGasto() {
+        return calcGasto(0, 0);
+    }
 
-        if (selectedPeca == null || selectedPeca.isEmpty()) {
-            ingressosTable.setItems(ingressosData);
-        } else {
-            List<Ingresso> filtered = ingressosData.stream()
-                    .filter(i -> i.getPecaNome().equals(selectedPeca))
-                    .collect(Collectors.toList());
-            ingressosTable.setItems(FXCollections.observableArrayList(filtered));
+    int calcGasto(int valorAtual, int indice) {
+        /* Caso base */
+        if (indice >= ingressosData.size()) {
+            return valorAtual;
         }
 
+        return calcGasto(valorAtual + ingressosData.get(indice).getPreco(), indice+1);
+    }
+
+
+    @FXML
+    private void filterAction(ActionEvent event) {
+        String pecaSelecionada = pecaFilter.getValue();
+        String sessaoSelecionada = sessaoFilter.getValue();
+        String areaSelecionada = areaFilter.getValue();
+
+        List<Ingresso> filtered = ingressosData.stream()
+                .filter(i -> pecaSelecionada == null || pecaSelecionada.isEmpty() || i.getPecaNome().equals(pecaSelecionada))
+                .filter(i -> sessaoSelecionada == null || sessaoSelecionada.isEmpty() || i.getSessaoNome().equals(sessaoSelecionada))
+                .filter(i -> areaSelecionada == null || areaSelecionada.isEmpty() || i.getAreaNome().equals(areaSelecionada))
+                .collect(Collectors.toList());
+
+        ingressosTable.setItems(FXCollections.observableArrayList(filtered));
         updateStats();
     }
 
     @FXML
     private void clearFilterAction(ActionEvent event) {
         pecaFilter.setValue(null);
+        sessaoFilter.setValue(null);
+        areaFilter.setValue(null);
         ingressosTable.setItems(ingressosData);
         updateStats();
     }

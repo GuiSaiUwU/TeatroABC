@@ -1,16 +1,19 @@
 package br.eng.dgjl.teatro;
 
 import br.eng.dgjl.teatro.classes.Usuario;
+import br.eng.dgjl.teatro.ui.CompraMenu;
 import br.eng.dgjl.teatro.ui.StartupMenu;
 import com.google.gson.Gson;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class Main extends Application {
     public static LinkedList<Usuario> usuarios = new LinkedList<>();
@@ -35,7 +38,7 @@ public class Main extends Application {
             fileReader.close();
             inciarMenuStart(stage);
         } else {
-            System.out.println("Usuarios.json com caminho inválido");
+            System.out.println("Usuarios.json com caminho inválido: " + usuariosJsonFilePath);
         }
     }
 
@@ -66,6 +69,9 @@ public class Main extends Application {
         stage.setTitle("Teatro - Entrada");
         stage.setResizable(false);
         stage.setScene(scene);
+        stage.getIcons().add(new Image(Objects.requireNonNull
+                (CompraMenu.class.getResourceAsStream("images/Logo.png"))
+        ));
         startupMenu.start(stage);
     }
 }
