@@ -141,11 +141,9 @@ public class CompraMenu extends Application {
 
     public void historicoAction(ActionEvent event) {
         try {
-            // Load the FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("HistoricoView.fxml"));
             AnchorPane root = loader.load();
 
-            // Create the scene and stage
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setTitle("Teatro - Histórico de Compras");
@@ -153,12 +151,8 @@ public class CompraMenu extends Application {
             stage.getIcons().add(new Image(Objects.requireNonNull
                     (CompraMenu.class.getResourceAsStream("images/Logo.png"))
             ));
-
-            // Set the stage in the controller
             HistoricoController controller = loader.getController();
             controller.setStage(stage);
-
-            // Show the stage
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

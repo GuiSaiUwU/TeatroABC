@@ -6,7 +6,11 @@ import br.eng.dgjl.teatro.classes.Ingresso;
 import br.eng.dgjl.teatro.classes.Peca;
 import br.eng.dgjl.teatro.classes.Usuario;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -23,11 +27,12 @@ import static br.eng.dgjl.teatro.ui.CompraMenu.pecas;
 public class AdminMenu extends Application {
 
     private AdminController controller;
+
     public AdminMenu(AdminController controller) {
         this.controller = controller;
     }
 
-    class PecaInfo {
+    static class PecaInfo {
         String nome;
         int valorArrecadado;
         int ingressosVendidos;
@@ -39,7 +44,7 @@ public class AdminMenu extends Application {
         }
     }
 
-    class SessaoInfo {
+    static class SessaoInfo {
         String nome;
         int valorArrecadado;
         int ingressosVendidos;
@@ -57,7 +62,10 @@ public class AdminMenu extends Application {
         controller.imprimirBtn.setOnAction(
                 this::imprimirAction
         );
+
         List<Ingresso> ingressos = usuarios.stream().map(Usuario::getIngressos).flatMap(List::stream).toList();
+        controller.ingressosData = FXCollections.observableArrayList(ingressos);
+        controller.instanciarColunas();
 
         List<PecaInfo> pecasInfos = new ArrayList<>(
                 pecas.stream()
@@ -137,43 +145,19 @@ public class AdminMenu extends Application {
         controller.sessaoMaisOcupada.setText(sessaoMaisOcupadaCMP.isPresent() ? sessaoMaisOcupadaCMP.get().nome : "Não foi possivel determinar.");
         controller.sessaoMenosOcupada.setText(sessaoMenosOcupadaCMP.isPresent() ? sessaoMenosOcupadaCMP.get().nome : "Não foi possivel determinar.");
 
-
-        /*
-        "Placar": {
-            "Sessao Menos Lucrativa": "Manhã",
-            "Peca Menos Lucrativa": "Harry Potter e a criança amaldiçoada",
-            "Sessao Menos Ocupada": "Manhã",
-            ...
-        },
-        "Romeu e Julieta": {
-            "QtdCadeiras": 5,
-            "Vendas": {
-              "Camarote 1": {
-                "Tarde": {
-                  "Receita": 400,
-                  "qtdCadeiras": 5
-                },
-                ...
-              }
-            },
-            "Receita": 400,
-            "Nome": "Romeu e Julieta"
-        },
-        ...
-         */
-        /*
-         * Ganhos é o hashmap responsável por gerar o relatório.
-         * Sim, sim, deveria ser uma classe própria para facilitar a implementação.
-         * Entretanto, o software, com data prevista de entrega, precisa de algo funcionando, não perfeito. 😝
-         */
         StringBuilder sb = new StringBuilder();
+
+        Map<String, Integer> receitaTotalPorArea = new HashMap<>();
 
         for (Peca peca : pecas) {
             List<Cadeira> cadeiras = peca.getCadeiraList();
             if (cadeiras == null || cadeiras.isEmpty()) continue;
 
             sb.append("\n").append("-".repeat(30)).append("\n");
-            sb.append("Peça: ").append(peca.getNome()).append("\n");
+            sb.append("- Peça: ").append(peca.getNome()).append("\n");
+
+            int receitaTotalPeca = 0;
+            int ingressosVendidosPeca = 0;
 
             Map<String, Integer> receitaPorArea = new HashMap<>();
             for (Cadeira cadeira : cadeiras) {
@@ -182,18 +166,48 @@ public class AdminMenu extends Application {
                 String areaNome = cadeira.getArea().getNome();
                 int preco = cadeira.getArea().getPreco();
 
+                receitaTotalPeca += preco;
+                ingressosVendidosPeca += 1;
+
                 receitaPorArea.put(areaNome,
                         receitaPorArea.getOrDefault(areaNome, 0) + preco
                 );
+                receitaTotalPorArea.put(areaNome,
+                        receitaTotalPorArea.getOrDefault(areaNome, 0) + preco
+                );
             }
 
+            sb.append("- Receita Total: R$ ").append(receitaTotalPeca).append("\n");
+            sb.append("- Ingressos Vendidos: ").append(ingressosVendidosPeca).append("\n");
+
             for (Map.Entry<String, Integer> entry : receitaPorArea.entrySet()) {
-                sb.append("---\n");
-                sb.append("Área: ").append(entry.getKey()).append("\n");
-                sb.append("Receita: R$ ").append(entry.getValue()).append("\n");
+                sb.append("--\n");
+                sb.append("- Área: ").append(entry.getKey()).append("\n");
+                sb.append("- Receita: R$ ").append(entry.getValue()).append("\n");
             }
         }
 
+        sb.append("\n").append("-".repeat(30)).append("\n");
+        sb.append("Receita por Área:").append("\n");
+        for (Map.Entry<String, Integer> entry : receitaTotalPorArea.entrySet()) {
+            sb.append("--\n");
+            sb.append("- Área: ").append(entry.getKey()).append("\n");
+            sb.append("- Receita Total: R$ ").append(entry.getValue()).append("\n");
+        }
+
+        Map<String, Integer> gastoPorCliente = new HashMap<>();
+        usuarios.forEach(usuario -> {
+            int gastoTotal = 0;
+            for (Ingresso ingresso : usuario.getIngressos()) {
+                gastoTotal += ingresso.getPreco();
+            }
+            gastoPorCliente.put(usuario.getNome(), gastoTotal);
+        });
+
+        sb.append("\n").append("-".repeat(30)).append("\n");
+        sb.append("Gastos médio por cliente: R$")
+                .append(gastoPorCliente.values().stream().mapToInt(Integer::intValue).sum() / gastoPorCliente.size())
+                .append("\n");
         controller.ganhosArea.setText(sb.toString());
     }
 

@@ -18,8 +18,8 @@
             <ChoiceBox fx:id="sessaoFilter" prefWidth="120" />
             <Label text="Área:" />
             <ChoiceBox fx:id="areaFilter" prefWidth="120" />
-            <Button fx:id="filterBtn" onAction="#filterAction" text="Filtrar" />
-            <Button fx:id="clearFilterBtn" onAction="#clearFilterAction" text="Limpar Filtros" />
+            <Button onAction="#filterAction" text="Filtrar" />
+            <Button onAction="#clearFilterAction" text="Limpar Filtros" />
         </HBox>
 
 

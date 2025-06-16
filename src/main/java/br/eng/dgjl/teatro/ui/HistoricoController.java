@@ -5,17 +5,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static br.eng.dgjl.teatro.Main.gson;
 import static br.eng.dgjl.teatro.Main.usuarioLogado;
 
 public class HistoricoController {
@@ -29,6 +26,7 @@ public class HistoricoController {
     @FXML private TableColumn<Ingresso, String> areaColumn;
     @FXML private TableColumn<Ingresso, Integer> cadeiraColumn;
     @FXML private TableColumn<Ingresso, Integer> precoColumn;
+
     @FXML private Label maiorGastoLabel;
     @FXML private Label menorGastoLabel;
     @FXML private Label totalGastoLabel;
@@ -37,14 +35,12 @@ public class HistoricoController {
     private Stage stage;
 
     public void initialize() {
-        // Set up table columns
         pecaColumn.setCellValueFactory(new PropertyValueFactory<>("pecaNome"));
         sessaoColumn.setCellValueFactory(new PropertyValueFactory<>("sessaoNome"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("areaNome"));
         cadeiraColumn.setCellValueFactory(new PropertyValueFactory<>("cadeiraPosicao"));
         precoColumn.setCellValueFactory(new PropertyValueFactory<>("preco"));
 
-        // Format the price column
         precoColumn.setCellFactory(tc -> new TableCell<>() {
             @Override
             protected void updateItem(Integer preco, boolean vazio) {
@@ -57,7 +53,6 @@ public class HistoricoController {
             }
         });
 
-        // Format the chair column
         cadeiraColumn.setCellFactory(tc -> new TableCell<>() {
             @Override
             protected void updateItem(Integer posicao, boolean empty) {
@@ -88,10 +83,10 @@ public class HistoricoController {
                 ingressos.stream().map(Ingresso::getAreaNome).distinct().sorted().toList()
         ));
 
-        updateStats();
+        atualizarDados();
     }
 
-    private void updateStats() {
+    private void atualizarDados() {
         if (ingressosData.isEmpty()) {
             maiorGastoLabel.setText("R$ 0,00");
             menorGastoLabel.setText("R$ 0,00");
@@ -100,18 +95,18 @@ public class HistoricoController {
         }
 
         int total = calcGasto();
-        int max = ingressosData.stream().mapToInt(Ingresso::getPreco).max().orElse(0);
-        int min = ingressosData.stream().mapToInt(Ingresso::getPreco).min().orElse(0);
+        int maiorGasto = ingressosData.stream().mapToInt(Ingresso::getPreco).max().orElse(0);
+        int menorGasto = ingressosData.stream().mapToInt(Ingresso::getPreco).min().orElse(0);
 
         totalGastoLabel.setText("R$ " + total);
-        maiorGastoLabel.setText("R$ " + max);
-        menorGastoLabel.setText("R$ " + min);
+        maiorGastoLabel.setText("R$ " + maiorGasto);
+        menorGastoLabel.setText("R$ " + menorGasto);
     }
 
     /*
     * Temos que chamar a função recursiva com um valor inicial
     * Pois o Java não permite iniciar variaveis nos parametros
-    * Não da pra fazer calcGasto(int valorAtual = 0, indice = 0);
+    * Não da para fazer calcGasto(int valorAtual = 0, indice = 0);
     */
     int calcGasto() {
         return calcGasto(0, 0);
@@ -133,14 +128,14 @@ public class HistoricoController {
         String sessaoSelecionada = sessaoFilter.getValue();
         String areaSelecionada = areaFilter.getValue();
 
-        List<Ingresso> filtered = ingressosData.stream()
+        List<Ingresso> filtrados = ingressosData.stream()
                 .filter(i -> pecaSelecionada == null || pecaSelecionada.isEmpty() || i.getPecaNome().equals(pecaSelecionada))
                 .filter(i -> sessaoSelecionada == null || sessaoSelecionada.isEmpty() || i.getSessaoNome().equals(sessaoSelecionada))
                 .filter(i -> areaSelecionada == null || areaSelecionada.isEmpty() || i.getAreaNome().equals(areaSelecionada))
                 .collect(Collectors.toList());
 
-        ingressosTable.setItems(FXCollections.observableArrayList(filtered));
-        updateStats();
+        ingressosTable.setItems(FXCollections.observableArrayList(filtrados));
+        atualizarDados();
     }
 
     @FXML
@@ -149,7 +144,7 @@ public class HistoricoController {
         sessaoFilter.setValue(null);
         areaFilter.setValue(null);
         ingressosTable.setItems(ingressosData);
-        updateStats();
+        atualizarDados();
     }
 
     @FXML
