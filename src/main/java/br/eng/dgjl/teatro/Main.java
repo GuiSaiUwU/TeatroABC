@@ -21,9 +21,8 @@ public class Main extends Application {
     public static Gson gson = new Gson();
 
     // Alterar isso daq
-    public static final String usuariosJsonFilePath = "C:\\Users\\Aluno\\Desktop\\JJ\\PI\\TeatroABC\\src\\main\\resources\\br\\eng\\dgjl\\teatro\\usuarios.json";
+    public static final String usuariosJsonFilePath = "C:\\Users\\GuiSai\\Desktop\\aulas\\pi\\TeatroABC\\src\\main\\resources\\br\\eng\\dgjl\\teatro\\usuarios.json";
 
-    @Override
     public void start(Stage stage) throws Exception {
         /* Carregando os usuarios salvos no json e salvando na variável usuarios */
         File f = new File(usuariosJsonFilePath);
