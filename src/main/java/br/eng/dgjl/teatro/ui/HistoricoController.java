@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static br.eng.dgjl.teatro.Main.gson;
 import static br.eng.dgjl.teatro.Main.usuarioLogado;
 
 public class HistoricoController {
@@ -33,7 +34,7 @@ public class HistoricoController {
     private ObservableList<Ingresso> ingressosData;
     private Stage stage;
 
-    public void inicializar() {
+    public void initialize() {
         pecaColumn.setCellValueFactory(new PropertyValueFactory<>("pecaNome"));
         sessaoColumn.setCellValueFactory(new PropertyValueFactory<>("sessaoNome"));
         areaColumn.setCellValueFactory(new PropertyValueFactory<>("areaNome"));
