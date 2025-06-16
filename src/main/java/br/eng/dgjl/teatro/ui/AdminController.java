@@ -88,7 +88,11 @@ public class AdminController {
                 if (vazio || CPF == null) {
                     setText(null);
                 } else {
-                    setText(CPF.replace(".", "").replace("-", ""));
+                    // Gera um CPF tipo 708.xxx.xxx-22
+                    String cpfTemp = CPF.substring(0, 3) +
+                            ".xxx.xxx-" +
+                            CPF.substring(CPF.length() - 2);
+                    setText(cpfTemp);
                 }
             }
         });
