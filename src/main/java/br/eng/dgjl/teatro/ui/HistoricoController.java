@@ -7,8 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -150,6 +154,34 @@ public class HistoricoController {
     @FXML
     private void closeAction(ActionEvent event) {
         stage.close();
+    }
+
+    @FXML
+    private void imprimirAction(ActionEvent event) {
+        StringBuilder ingressos = new StringBuilder();
+        for (Ingresso ingresso : usuarioLogado.getIngressos()) {
+            ingressos.append(String.format("Peça: %s.\n", ingresso.getPecaNome()));
+            ingressos.append(String.format("Sessão: %s.\n", ingresso.getSessaoNome()));
+            ingressos.append(String.format("Área: %s.\n", ingresso.getAreaNome()));
+            ingressos.append(String.format("Cadeira: %02d.\n\n", ingresso.getCadeiraPosicao() + 1));
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Salvar Comprovante");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Texto", "*.txt"));
+        fileChooser.setInitialFileName(usuarioLogado.getNome());
+        File file = fileChooser.showSaveDialog(stage.getScene().getWindow());
+
+        if (file != null) {
+            try { /* Salvando o arquivo */
+                file.createNewFile();
+                FileWriter myWriter = new FileWriter(file);
+                myWriter.write(ingressos.toString());
+                myWriter.close();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
     public void setStage(Stage stage) {

@@ -30,7 +30,7 @@ import static br.eng.dgjl.teatro.Main.*;
 public class CompraMenu extends Application {
     static List<Peca> pecas = new LinkedList<Peca>();
 
-    /* Variaveis que são utilizadas para inicializar as Peças */
+    /* Variáveis utilizadas para inicializar as Peças */
     static String[] pecasNome = {"Romeu e Julieta", "Harry Potter e a criança amaldiçoada", "Digital Circus"};
     static String[] sessoes = {"Manhã", "Tarde", "Noite"};
     static Area[] areas = {
@@ -212,7 +212,7 @@ public class CompraMenu extends Application {
                 x -> Integer.parseInt(x.substring(8).trim()) - 1 // "Cadeira 02" -> 1 (o seu indice)
         ).toList();
 
-        /* Filtrando as cadeiras para marca-las como compradas e instanciar os ingressos para o usuário. */
+        /* Filtrando as cadeiras para marcá-las como compradas e instanciar os ingressos para o utilizador. */
         peca.getCadeiraList().forEach(cadeira -> {
             if (cadeira.getArea().getNome().equals(areaSelecionada) &&
                     !cadeira.isComprada() &&
@@ -321,7 +321,7 @@ public class CompraMenu extends Application {
                         .filter(x -> x.getSessao().equals(sessaoSelecionada))
                         .filter(x -> !x.isComprada())
                         .map(x ->
-                            String.format("Cadeira %02d", x.getPosicao()+1))
+                                String.format("Cadeira %02d", x.getPosicao()+1))
                         .toList()
         );
 

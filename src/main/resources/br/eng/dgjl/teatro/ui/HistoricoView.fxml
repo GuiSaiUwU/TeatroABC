@@ -4,6 +4,7 @@
   Copyright Teatro dgjl
 -->
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
@@ -52,8 +53,15 @@
         </TableView>
       <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="50.0">
          <children>
-      
-              <Button fx:id="closeBtn" onAction="#closeAction" text="Fechar" />
+
+              <Button fx:id="closeBtn" onAction="#closeAction" text="Fechar">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin></Button>
+            <Button mnemonicParsing="false" onAction="#imprimirAction" text="Imprimir">
+               <HBox.margin>
+                  <Insets left="10.0" right="10.0" />
+               </HBox.margin></Button>
          </children>
       </HBox>
     </VBox>
