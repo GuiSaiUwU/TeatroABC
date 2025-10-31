@@ -1,12 +1,13 @@
 # TeatroABC
 
-Aplicativo desktop em Java para gerenciar a venda e compra de ingressos de um teatro. A interface é construída com JavaFX (FXML).
+Aplicativo desktop em Java para venda e relatórios de ingressos de um teatro. A interface é construída com JavaFX (FXML).
 
 ## O que é este projeto
 
-- Sistema simples de gerenciamento de ingressos para um teatro.
-- Permite gerenciar áreas, cadeiras, usuários e vendas (compra/visualização) através de uma interface gráfica JavaFX.
-- Os dados de usuários estão em `src/main/resources/br/eng/dgjl/teatro/usuarios.json` e as views FXML em `src/main/resources/br/eng/dgjl/teatro/ui`.
+- Sistema simples de compra de ingressos para um teatro.
+- Visualização de relatórios de venda.
+- Visualização de histórico de compra.
+- Possui validação nos campos de entrada (CPF, telefone, ano de nascimento, senha).
 
 ## Utilização
 - No menu inicial é possivel realizar o cadastro e/ou login.
